@@ -1,0 +1,21 @@
+<html>
+  <head>
+    <title>Snake</title>
+    <script type="text/javascript" src="jquery-1.9.1.js"></script>
+    <script type="text/javascript" src="underscore.js"></script>
+    <script type="text/javascript" src="snake.js"></script>
+    <script type="text/javascript" src="snake_ui.js"></script>
+    <link rel="stylesheet" type="text/css" href="./snake.css">
+  </head>
+
+  <body>
+    <div class="header_div"><h2>Snake Game</h2></div>
+    <div id="grid">
+
+    </div>
+
+    <script>
+      $(function () { new SnakeGame.View($("#grid")).start(); });
+    </script>
+  </body>
+ </html>
