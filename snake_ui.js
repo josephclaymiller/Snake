@@ -60,7 +60,6 @@
     } else { 
       alert("You lose");
       window.clearInterval(this.intv); // cancel step interval action 
-      document.location.reload(true); // reload window
     }
   };
 
