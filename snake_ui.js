@@ -41,7 +41,7 @@
     _(board.snake.segments).each(function (seg) {
       cellGrid[seg.i][seg.j].addClass("snake");
     });
-    debugger
+    // debugger
     cellGrid[board.apple.position.i][board.apple.position.j].addClass("apple");
 
     this.$el.empty();
@@ -59,7 +59,8 @@
       this.render();
     } else { 
       alert("You lose");
-      window.clearInterval(this.intv);
+      window.clearInterval(this.intv); // cancel step interval action 
+      document.location.reload(true); // reload window
     }
   };
 

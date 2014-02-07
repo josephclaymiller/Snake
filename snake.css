@@ -1,20 +1,33 @@
+body {
+  background-color: #666;
+}
+
 .cell {
   float: left;
   height: 20px;
   width: 20px;
-  background: #eee;
+  background-color: #eee;
 
   border: solid gray 1px;
 }
 
 .snake {
-  background-color: green
+  background-image: url("assets/images/snake.png");
 }
 
 .apple {
-  background-color: red;
+  background-image: url("assets/images/apple.png");
 }
 
 .row {
   clear: both;
+}
+
+
+.header_div {
+  text-align: center;
+  color: #0e0;
+  background-color: green;
+  width: 440px;
+  border-radius: 20px;  
 }

@@ -17,7 +17,7 @@
   Apple.SIGN = "A";
 
   Apple.prototype.replace = function() {
-    // Should be checking to see there is no snake here.
+    // TODO: check to see there is no snake here.
     var x = Math.floor(Math.random() * this.board.size);
     var y = Math.floor(Math.random() * this.board.size);
 
