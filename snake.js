@@ -72,7 +72,16 @@
   };
 
   Snake.prototype.turn = function(newDir) {
-    this.dir = newDir;
+    // not turning if dir and newDir share a row
+    var sameRow = (Snake.DIRS[this.dir].row === 0 &&
+                   Snake.DIRS[newDir].row === 0);
+    // not turning if dir and newDir share a col
+    var sameCol = (Snake.DIRS[this.dir].col === 0 &&
+                   Snake.DIRS[newDir].col === 0);
+    // change direction if turning or if there is only 1 snake segment
+    if ((!sameRow && !sameCol)||(this.segments.length === 1)) {
+      this.dir = newDir;
+    }
   };
 
   Snake.prototype.eatsApple = function(coord) {
