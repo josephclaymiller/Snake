@@ -40,10 +40,10 @@
     var cellGrid = this.buildGrid(board.size);
     // add snake to grid
     _(board.snake.segments).each(function(seg) {
-      cellGrid[seg.i][seg.j].addClass("snake");
+      cellGrid[seg.row][seg.col].addClass("snake");
     });
     // add apple to grid
-    cellGrid[board.apple.position.i][board.apple.position.j].addClass("apple");
+    cellGrid[board.apple.position.row][board.apple.position.col].addClass("apple");
     // remove last board
     this.$el.empty(); 
     // add current board

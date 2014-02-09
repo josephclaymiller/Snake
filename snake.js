@@ -1,13 +1,13 @@
 (function(root) {
   var SnakeGame = root.SnakeGame = (root.SnakeGame || {});
 
-  var Coord = SnakeGame.Coord = function(i, j) {
-    this.i = i;
-    this.j = j;
+  var Coord = SnakeGame.Coord = function(row, col) {
+    this.row = row;
+    this.col = col;
   };
 
   Coord.prototype.plus = function(coord2) {
-    return new Coord(this.i + coord2.i, this.j + coord2.j); 
+    return new Coord(this.row + coord2.row, this.col + coord2.col); 
   };
  
   var Apple = SnakeGame.Apple = function(board) {
@@ -45,13 +45,13 @@
   
   Snake.prototype.is_segment = function(x, y) {
     return _(this.segments).any(function(segment) {
-      return (x === segment.i) && (y === segment.j);
+      return (x === segment.row) && (y === segment.col);
     });
   };
   
   Snake.prototype.not_segment = function(x, y) {
     return _(this.segments).every(function(segment) {
-      return (x !== segment.i) || (y !== segment.j);
+      return (x !== segment.row) || (y !== segment.col);
     });
   };
   
@@ -77,7 +77,7 @@
 
   Snake.prototype.eatsApple = function(coord) {
     var apple_coord = this.board.apple.position;
-    return (coord.i == apple_coord.i) && (coord.j == apple_coord.j);
+    return (coord.row == apple_coord.row) && (coord.col == apple_coord.col);
   };
 
   var Board = SnakeGame.Board = function(size) {
@@ -99,11 +99,11 @@
   };
 
   Board.prototype.validMove = function(coord) {
-    var inbounds = (coord.i >= 0) &&
-                 (coord.i < this.size) &&
-                 (coord.j >= 0) &&
-                 (coord.j < this.size);
-    var not_snake = this.snake.not_segment(coord.i, coord.j);
+    var inbounds = (coord.row >= 0) &&
+                 (coord.row < this.size) &&
+                 (coord.col >= 0) &&
+                 (coord.col < this.size);
+    var not_snake = this.snake.not_segment(coord.row, coord.col);
     return inbounds && not_snake;
   };
 
@@ -111,11 +111,11 @@
     var grid = Board.grid(this.size);
     // render snake
     _(this.snake.segments).each(function(segment) {
-      grid[segment.i][segment.j] = Snake.SYMBOL;
+      grid[segment.row][segment.col] = Snake.SYMBOL;
     });
     // render apple
     var apple_pos = this.apple.position;
-    grid[apple_pos.i][apple_pos.j] = Apple.SYMBOL;
+    grid[apple_pos.row][apple_pos.col] = Apple.SYMBOL;
 
     return _(grid).map(function(row) { 
       return row.join(""); 
