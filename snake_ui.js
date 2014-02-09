@@ -1,5 +1,7 @@
 (function (root) {
   var SnakeGame = root.SnakeGame = (root.SnakeGame || {});
+  
+  var BOARD_SIZE = 20;
 
   var View = SnakeGame.View = function (element) {
     this.$el = element;
@@ -15,33 +17,31 @@
     39: "E"
   };
 
-  View.STEPS = 100;
+  View.STEP_INTERVAL = 100; // Time per step
 
   View.prototype.handleKeyEvent = function (event) {
     if (_(View.validKeyCodes).has(event.keyCode)) {
       this.board.snake.turn(View.validKeyCodes[event.keyCode]);
-    } else {
-
     }
+  };
+  
+  View.prototype.buildGrid = function(size) {
+    return _.times(size, function(){
+      return _.times(size, function(){
+        return $('<div class="cell"></div>');
+      }); 
+    });
   };
 
   View.prototype.render = function () {
     var view = this;
     var board = view.board;
-    
-    function buildGrid() {
-      return _.times(board.size, function(){
-        return _.times(board.size, function(){
-          return $('<div class="cell"></div>');
-        }); 
-      });
-    }
 
-    var cellGrid = buildGrid();
+    var cellGrid = this.buildGrid(board.size);
     _(board.snake.segments).each(function (seg) {
       cellGrid[seg.i][seg.j].addClass("snake");
     });
-    // debugger
+    
     cellGrid[board.apple.position.i][board.apple.position.j].addClass("apple");
 
     this.$el.empty();
@@ -58,19 +58,19 @@
       this.board.snake.move();
       this.render();
     } else { 
-      alert("You lose");
+      alert("You lose"); // pop up alert to inform the player the game has ended
       window.clearInterval(this.intv); // cancel step interval action 
     }
   };
 
   View.prototype.start = function() {
-    this.board = new SnakeGame.Board(20);
+    this.board = new SnakeGame.Board(BOARD_SIZE);
 
     $(window).keydown(this.handleKeyEvent.bind(this));
 
     this.intv = window.setInterval(
       this.step.bind(this),
-      View.STEPS
+      View.STEP_INTERVAL
     ); 
   };
 

@@ -12,11 +12,10 @@
  
   var Apple = SnakeGame.Apple = function(board) {
     this.board = board;
+    this.SYMBOL = "A";
   };
 
-  Apple.SIGN = "A";
-
-  Apple.prototype.replace = function() {
+  Apple.prototype.place = function() {
     // TODO: check to see there is no snake here.
     var x = Math.floor(Math.random() * this.board.size);
     var y = Math.floor(Math.random() * this.board.size);
@@ -27,11 +26,11 @@
   var Snake = SnakeGame.Snake = function (board) {
     this.dir = "N";
     this.board = board;
+    this.SYMBOL = "S";
 
     var center = new Coord(board.size / 2, board.size / 2);
     this.segments = [center];
   };
-
 
   Snake.DIRS = { 
     "N" : new Coord(-1, 0),
@@ -40,8 +39,6 @@
     "W" : new Coord(0, -1)
   };
 
-  Snake.SIGN = "S";
-
   Snake.prototype.move = function () {
     var snake = this;
     var head = _(this.segments).last();
@@ -49,7 +46,7 @@
 
     if (snake.eatsApple(new_head)) {
       snake.segments.push(head.plus(Snake.DIRS[this.dir]));	 
-      this.board.apple.replace();
+      this.board.apple.place();
     } else if (this.board.validMove(new_head)) {
       snake.segments.push(head.plus(Snake.DIRS[this.dir]));
       snake.segments.shift();
@@ -70,41 +67,44 @@
   var Board = SnakeGame.Board = function(size) {
     this.size = size;
     this.apple = new Apple(this);
-    this.apple.replace();
+    this.apple.place();
  
     this.snake = new Snake(this);
     this.apples = [];
   };
 
-  Board.NOSNAKE = ".";
-
   Board.grid = function (size) {
     return _.times(size, function() {
       return _.times(size, function() {
-	return Board.NOSNAKE;
+      	return " "; //empty board space;
       }); 
     });
   };
 
   Board.prototype.validMove = function (coord) {
-    var inside = (coord.i >= 0) && (coord.i <= 19) && (coord.j >= 0) && (coord.j <= 19);
-    var empty = _(this.snake.segments).every(function(segment) {
+    var inbounds = (coord.i >= 0) &&
+                 (coord.i < this.size) &&
+                 (coord.j >= 0) &&
+                 (coord.j < this.size);
+    var not_snake = _(this.snake.segments).every(function(segment) {
       return (coord.i !== segment.i) || (coord.j !== segment.j);
     });
-    return inside && empty;
+    return inbounds && not_snake;
   };
 
   Board.prototype.render = function() {
     var grid = Board.grid(this.size);
-
+    // render snake
     _(this.snake.segments).each(function(segment) {
-      grid[segment.i][segment.j] = Snake.SIGN;
+      grid[segment.i][segment.j] = Snake.SYMBOL;
     });
+    // render apple
     var apple_pos = this.apple.position;
-    grid[apple_pos.i][apple_pos.j] = Apple.SIGN;
+    grid[apple_pos.i][apple_pos.j] = Apple.SYMBOL;
 
-    return _(grid).map(function (row) { return row.join(""); }).join("\n");
-
+    return _(grid).map(function (row) { 
+      return row.join(""); 
+    }).join("\n");
   };
 
 })(this);
