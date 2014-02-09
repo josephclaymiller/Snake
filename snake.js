@@ -29,6 +29,8 @@
 
   var Snake = SnakeGame.Snake = function(board) {
     this.dir = "N";
+    this.next_dir = this.dir;
+    
     this.board = board;
     this.SYMBOL = "S";
 
@@ -58,6 +60,8 @@
   Snake.prototype.move = function() {
     var snake = this;
     var head = _(this.segments).last();
+    // change snake direction to next direction
+    this.dir = this.next_dir;
     var new_head = head.plus(Snake.DIRS[this.dir]);
     // add snake segment in direction snake is moving
     if (snake.eatsApple(new_head)) {
@@ -70,17 +74,22 @@
       snake.active = false; // stop snake if snake made an invalid move
     }
   };
-
-  Snake.prototype.turn = function(newDir) {
+  
+  Snake.prototype.is_turn = function(newDir) {
     // not turning if dir and newDir share a row
     var sameRow = (Snake.DIRS[this.dir].row === 0 &&
                    Snake.DIRS[newDir].row === 0);
     // not turning if dir and newDir share a col
     var sameCol = (Snake.DIRS[this.dir].col === 0 &&
                    Snake.DIRS[newDir].col === 0);
+    return (!sameRow && !sameCol);
+  };
+
+  Snake.prototype.turn = function(newDir) {
     // change direction if turning or if there is only 1 snake segment
-    if ((!sameRow && !sameCol)||(this.segments.length === 1)) {
-      this.dir = newDir;
+    if ((this.is_turn(newDir)) || (this.segments.length === 1)) {
+      // this.dir = newDir;
+      this.next_dir = newDir;
     }
   };
 
