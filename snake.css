@@ -15,6 +15,17 @@ body {
   background-image: url("assets/images/snake.png");
 }
 
+.snake_head {
+  background-image: url("assets/images/snake_head.png");
+}
+
+.E, .W {
+  -webkit-transform: rotate(90deg); /*Chrome, Safari*/
+  -moz-transform: rotate(90deg); /*Firefox*/
+  -ms-transform: rotate(90deg); /*Internet Explorer*/
+  -o-transform: rotate(90deg); /*Opera*/
+}
+
 .apple {
   background-image: url("assets/images/apple.png");
 }
@@ -22,7 +33,6 @@ body {
 .row {
   clear: both;
 }
-
 
 .header_div {
   text-align: center;

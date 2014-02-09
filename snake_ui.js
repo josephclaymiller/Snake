@@ -20,8 +20,11 @@
   View.STEP_INTERVAL = 100; // Time per step
 
   View.prototype.handleKeyEvent = function(event) {
+    var view = this;
+    var board = view.board;
     if (_(View.validKeyCodes).has(event.keyCode)) {
-      this.board.snake.turn(View.validKeyCodes[event.keyCode]);
+      var direction = View.validKeyCodes[event.keyCode];
+      this.board.snake.turn(direction);
     }
   };
   
@@ -39,9 +42,15 @@
     // build empty grid for board
     var cellGrid = this.buildGrid(board.size);
     // add snake to grid
-    _(board.snake.segments).each(function(seg) {
-      cellGrid[seg.row][seg.col].addClass("snake");
-    });
+    // if (board.snake.active) {
+      _(board.snake.segments).each(function(seg) {
+        cellGrid[seg.row][seg.col].addClass("snake");
+      });
+      var snake_head = _(board.snake.segments).last();
+      cellGrid[snake_head.row][snake_head.col].addClass("snake_head");
+      // turn snake head in direction
+      cellGrid[snake_head.row][snake_head.col].addClass(board.snake.dir);
+    // }
     // add apple to grid
     cellGrid[board.apple.position.row][board.apple.position.col].addClass("apple");
     // remove last board
@@ -57,10 +66,11 @@
   };
 
   View.prototype.step = function() {
-    if (_(this.board.snake.segments).last()) {
+    if (this.board.snake.active) {
       this.board.snake.move();
       this.render();
     } else { 
+      console.log("Game Over");
       alert("Game Over"); // pop up to inform the player the game has ended
       window.clearInterval(this.intv); // cancel step interval action 
     }

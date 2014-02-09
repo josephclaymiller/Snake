@@ -67,7 +67,7 @@
       snake.segments.push(head.plus(Snake.DIRS[this.dir]));
       snake.segments.shift(); // remove oldest segment if no apple eaten
     } else {
-      snake.segments = []; // remove snake if invalid move
+      snake.active = false; // stop snake if snake made an invalid move
     }
   };
 
@@ -84,6 +84,7 @@
     this.size = size;
  
     this.snake = new Snake(this);
+    this.snake.active = true;
     
     this.apple = new Apple(this);
     this.apple.place();
