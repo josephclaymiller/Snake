@@ -23,7 +23,7 @@
     
     // check to see there is no snake here
     if (this.board.snake.is_segment(x,y)) {
-      this.place();
+      this.place(); // try placing apple again if on snake segment
     }
   };
 
@@ -59,15 +59,15 @@
     var snake = this;
     var head = _(this.segments).last();
     var new_head = head.plus(Snake.DIRS[this.dir]);
-
+    // add snake segment in direction snake is moving
     if (snake.eatsApple(new_head)) {
       snake.segments.push(head.plus(Snake.DIRS[this.dir]));	 
       this.board.apple.place();
     } else if (this.board.validMove(new_head)) {
       snake.segments.push(head.plus(Snake.DIRS[this.dir]));
-      snake.segments.shift();
+      snake.segments.shift(); // remove oldest segment if no apple eaten
     } else {
-      snake.segments = []; 
+      snake.segments = []; // remove snake if invalid move
     }
   };
 
@@ -93,7 +93,7 @@
   Board.grid = function(size) {
     return _.times(size, function() {
       return _.times(size, function() {
-      	return " "; //empty board space;
+      	return null; //empty board space;
       }); 
     });
   };

@@ -36,18 +36,22 @@
   View.prototype.render = function() {
     var view = this;
     var board = view.board;
-
+    // build empty grid for board
     var cellGrid = this.buildGrid(board.size);
+    // add snake to grid
     _(board.snake.segments).each(function(seg) {
       cellGrid[seg.i][seg.j].addClass("snake");
     });
-    
+    // add apple to grid
     cellGrid[board.apple.position.i][board.apple.position.j].addClass("apple");
-
-    this.$el.empty();
+    // remove last board
+    this.$el.empty(); 
+    // add current board
     _(cellGrid).each(function(row) {
       var $rowEl = $('<div class="row"></div>');
-      _(row).each(function ($cell) { $rowEl.append($cell) });
+      _(row).each(function($cell) { 
+        $rowEl.append($cell);
+      });
       view.$el.append($rowEl);
     });
   };
@@ -57,7 +61,7 @@
       this.board.snake.move();
       this.render();
     } else { 
-      alert("You lose"); // pop up alert to inform the player the game has ended
+      alert("Game Over"); // pop up to inform the player the game has ended
       window.clearInterval(this.intv); // cancel step interval action 
     }
   };
